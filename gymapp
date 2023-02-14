@@ -1,0 +1,518 @@
+#include <iostream>
+#include <conio.h>
+
+using namespace std;
+
+void logo();
+void adminmenu();
+void membermenu();
+void trainermenu();
+int getuseridx(string username, string password);
+int getuseridx4(int useridx);
+
+string usernames[100] = {"ali"};      // parallel 1                 //array1
+string passwords[100] = {"admin123"}; // parallel 1                //array2
+string roles[100] = {"admin"};        // parallel 1               //array3
+
+string trainers[100];     // This array will only store trainers of the gym parallel2       //array4
+int trainersalary[100];   // parallel 2                                                    //array5
+string membersunder[100]; // Parallel2                                                    //array6
+
+string members[100];        // parallel 4                                                      //array7
+string membercalories[100]; // parallel 4                                               //array8
+string membersbmi[100];     // parallel 4                                                  //array9
+
+string machines[50];  // parallel 3                                                  //array10
+int machinedate[50];  // parallel 3                                                 //array11
+int machinemonth[50]; // parallel 3                                                 //array12
+int machineyear[50];  // parallel 3                                                 //array13
+
+void adminfunction1(int currentarrayidx);
+void adminfunction2(int currentarrayidx3);
+void adminfunction3(int currentarrayidx);
+bool adminfunction4(int currentarrayidx);
+void adminfunction5(int currentarrayidx3);
+bool adminfunction6(int currentarrayidx3);
+
+float memberfunction1();
+float memberfunction2();
+
+main()
+{
+    string username;
+    string password;
+    int choice;
+    int currentarrayidx1 = 1; // this variable checks how many users are already entered in the 3 parallel arrays this is for parallel 1
+    int currentarrayidx2 = 0; // idx for second series of parallel arrays
+    int currentarrayidx3 = 0; // idx for third series of parallel arrays
+    int currentarrayidx4 = 0; // idx for fourth series of parallel arrays
+    int useridx;              // while logging in this variable checks the user idx by using function and then is used in the 3 parallel arrays
+    bool change;              // will check whether user has been removed successfully and will help change current array idx by 1
+
+    while (choice != 27)
+    {
+        logo();
+
+        cout << "Enter username=> ";
+        cin >> username;
+        cout << "Enter password=> ";
+        cin >> password;
+
+        useridx = getuseridx(username, password);
+
+        if (useridx == -1)
+        {
+            cout << "Inavlid password or username press any key to try again=> ";
+            getch();
+        }
+
+        else if (roles[useridx] == "admin")
+        {
+
+            bool validchoice = false;
+            while (validchoice != true)
+            {
+                adminmenu();
+                cin >> choice;
+
+                if (choice == 1)
+                {
+                    adminfunction1(currentarrayidx1);
+                    validchoice = true;
+                }
+                else if (choice == 2)
+                {
+                    adminfunction2(currentarrayidx3);
+                    validchoice = true;
+                }
+                else if (choice == 3)
+                {
+                    adminfunction3(currentarrayidx1);
+                    if (roles[currentarrayidx1] == "trainer" || "Trainer")
+                    {
+                        trainers[currentarrayidx2] = usernames[currentarrayidx1];
+                        currentarrayidx2++;
+                    }
+                    else if (roles[currentarrayidx1] == "member" || "Member")
+                    {
+                        members[currentarrayidx4] = usernames[currentarrayidx1];
+                        currentarrayidx4++;
+                    }
+                    validchoice = true;
+                    cout << "Addition successful" << endl;
+                    cout << "Pres any key to continue";
+                    getch();
+                    currentarrayidx1++;
+                }
+                else if (choice == 4)
+                {
+                    change = adminfunction4(currentarrayidx1);
+                    validchoice = true;
+                    if (change)
+                    {
+                        cout << "Deletion successful" << endl;
+                        cout << "Press any key to continue";
+                        getch();
+                        currentarrayidx1--;
+                    }
+                }
+                else if (choice == 5)
+                {
+                    adminfunction5(currentarrayidx3);
+                    validchoice = true;
+                    currentarrayidx3++;
+                    cout << "Addition successful" << endl;
+                    cout << "Press any key to continue";
+                    getch();
+                }
+                else if (choice == 6)
+                {
+                    change = adminfunction6(currentarrayidx3);
+                    validchoice = true;
+                    if (change)
+                    {
+                        cout << "Deletion successfull" << endl;
+                        cout << "Press anykey to continue=> ";
+                        getch();
+                        currentarrayidx3--;
+                    }
+                }
+                else if (choice > 7)
+                {
+                    cout << "Invalid choice press any key to try again";
+                    getch();
+                }
+            }
+        }
+
+        else if (roles[useridx] == "trainer")
+        {
+            bool validchoice = false;
+            while (validchoice != true)
+            {
+                trainermenu();
+                cout << "In development currently" << endl;
+                cout << "Press any key to continue";
+                validchoice = true;
+                getch();
+            }
+        }
+
+        else if (roles[useridx] == "member")
+        {
+            bool validchoice = false;
+
+            while (validchoice != true)
+            {
+                membermenu();
+                cin >> choice;
+
+                if (choice == 1)
+                {
+                    int idx4 = getuseridx4(useridx);
+                    membersbmi[idx4] = memberfunction1();
+                    validchoice = true;
+                }
+                else if (choice == 2)
+                {
+                    int idx4 = getuseridx4(useridx);
+                    membercalories[idx4] = memberfunction2();
+                    validchoice = true;
+                }
+                else if (choice == 3)
+                {
+                    cout << "Coming soon";
+                    validchoice = true;
+                    getch();
+                }
+                else if (choice == 4)
+                {
+                    cout << "Coming soon";
+                    getch();
+                    validchoice = true;
+                }
+                else if (choice == 5)
+                {
+                    cout << "Coming soon";
+                    getch();
+                    validchoice = true;
+                }
+                else if (choice == 6)
+                {
+                    cout << "Coming soon";
+                    getch();
+                    validchoice = true;
+                }
+            }
+        }
+    }
+}
+
+void logo()
+{
+    system("CLS");
+    cout << endl;
+    cout << "                %%%%%%%%%%%%%%%%%%%%" << endl;
+    cout << "                %%%%%%%%%%%%%%%%%%%%" << endl;
+    cout << "                %        GYM       %" << endl;
+    cout << "                %%%%%%%%%%%%%%%%%%%%" << endl;
+    cout << "                %%%%%%%%%%%%%%%%%%%%" << endl;
+    cout << "                    " << endl;
+    cout << "                    " << endl;
+    cout << "                    " << endl;
+    cout << "                    " << endl;
+}
+
+void adminmenu()
+{
+
+    system("CLS");
+    cout << "1.Check member and employee record" << endl;
+    cout << "2.Check machine record" << endl;
+    cout << "3.Add member or trainer" << endl;
+    cout << "4.remove member or trainer" << endl;
+    cout << "5.Add machine" << endl;
+    cout << "6.remove machine " << endl;
+    cout << "Press escape to exit" << endl;
+    cout << endl;
+    cout << "Enter choice=> ";
+}
+
+void membermenu()
+{
+    system("CLS");
+    cout << "1. Check bmi" << endl;
+    cout << "2. Calculate calories" << endl;
+    cout << "3. Ask the trainer" << endl;
+    cout << "4. Check membership status" << endl;
+    cout << "5. What to eat" << endl;
+    cout << "6.Choose trainer" << endl;
+    cout << "Press escape to exit" << endl;
+    cout << endl;
+    cout << "Enter choice=> ";
+}
+
+void trainermenu()
+{
+    system("CLS");
+    cout << "1.Check member questions" << endl;
+    cout << "2.Answer member questions" << endl;
+    cout << "3.Check member goals" << endl;
+    cout << "Press escape to exit" << endl<<endl;
+    cout << "Enter choice=> ";
+}
+
+int getuseridx(string username, string password) // gets user idx for parallel array 1 2 3
+{
+    int useridx = 0;
+    int c = 0;
+
+    for (int x = 0; x < 100; x++)
+    {
+        if (username == usernames[x] && password == passwords[x])
+        {
+            useridx = x;
+            break;
+        }
+        c++;
+    }
+    if (c == 100)
+    {
+        useridx = -1;
+    }
+    return useridx;
+}
+
+int getuseridx4(int useridx) // gets idx for members that are in parallel array 7 8 9 in parallelseries4
+{
+    string username = usernames[useridx];
+    int idx;
+    for (int x = 0; x < 100; x++)
+    {
+        if (username == members[x])
+        {
+            idx = x;
+            break;
+        }
+    }
+    return idx;
+}
+
+void adminfunction1(int currentarrayidx)
+{
+
+    int useridx;
+    system("CLS");
+
+    cout << "user's username       user's password       user's role" << endl;
+    for (int x = 1; x < currentarrayidx; x++)
+    {
+        cout << usernames[x] << "                           " << passwords[x] << "                    " << roles[x] << endl;
+    }
+    cout << endl;
+    cout << "Press any key to continue=> ";
+    getch();
+}
+
+void adminfunction2(int currentarrayidx3)
+{
+    system("CLS");
+    cout << "Machine name       date       month       year" << endl;
+    for (int x = 0; x < currentarrayidx3; x++)
+    {
+        cout << machines[x] << "                   " << machinedate[x] << "            " << machinemonth[x] << "             " << machineyear[x] << endl;
+    }
+    cout << endl;
+    cout << "Press any key to continue=> ";
+    getch();
+}
+
+void adminfunction3(int currentarrayidx)
+{
+    int length;
+    system("CLS");
+    cout << "User is being entered at array index " << currentarrayidx << endl;
+
+    cout << "Enter member's user name=> ";
+    cin >> usernames[currentarrayidx];
+
+    cout << "Enter member password=> ";
+    cin >> passwords[currentarrayidx];
+
+    cout << "Member or a trainer? ";
+    cin >> roles[currentarrayidx];
+}
+
+int usernamevalidation(string username)
+
+{
+
+    int length;
+
+    length = username.length();
+
+    return length;
+}
+
+bool adminfunction4(int currentarrayidx)
+
+{
+    bool change = false;
+    string usernametoremove;
+    system("CLS");
+    cout << "Enter username you want you want to remove=> ";
+    cin >> usernametoremove;
+
+    for (int x = 1; x < currentarrayidx; x++)
+    {
+        if (usernametoremove == usernames[x])
+        {
+            for (int j = x; j < currentarrayidx - 1; j++)
+            {
+                usernames[j] = usernames[j + 1];
+                passwords[j] = passwords[j + 1];
+                roles[j] = roles[j + 1];
+            }
+            change = true;
+            break;
+        }
+    }
+    return change;
+}
+
+void adminfunction5(int currentarrayidx3)
+{
+    system("CLS");
+    cout << "Enter the name of the machine bought=> ";
+    cin >> machines[currentarrayidx3];
+
+    cout << "Enter date of purchase=> ";
+    cin >> machinedate[currentarrayidx3];
+
+    cout << "Enter month of machine purchase=> ";
+    cin >> machinemonth[currentarrayidx3];
+
+    cout << "Enter year of machine purchase=> ";
+    cin >> machineyear[currentarrayidx3];
+}
+
+bool adminfunction6(int currentarrayidx3)
+{
+
+    system("CLS");
+    string machinetoremove;
+    bool change = false;
+
+    cout << "Enter name of machine to remove=> ";
+    cin >> machinetoremove;
+
+    for (int x = 0; x < currentarrayidx3; x++)
+    {
+        if (machinetoremove == machines[x])
+        {
+            for (int j = x; j < currentarrayidx3 - 1; j++)
+            {
+                machines[j] = machines[j + 1];
+                machinedate[j] = machinedate[j + 1];
+                machinemonth[j] = machinemonth[j + 1];
+                machineyear[j] = machineyear[j + 1];
+            }
+            change = true;
+            break;
+        }
+    }
+    return change;
+}
+
+float memberfunction1() // calculate bmi of the member
+{
+    system("CLS");
+
+    float weight;
+    float height;
+    float bmi;
+
+    cout << "Enter weight in KG=> ";
+    cin >> weight;
+
+    cout << "Enter height in meteres=>";
+    cin >> height;
+
+    bmi = weight / (height * height);
+    cout << "your bmi is=> " << bmi << endl;
+    cout << "Press any key to continue=> ";
+    getch();
+
+    return bmi;
+}
+
+float memberfunction2()
+{
+    system("CLS");
+
+    float bmr;
+    float height;
+    float age;
+    float weight;
+    float calories;
+    int activity;
+
+    cout << "Enter weight in kg=> ";
+    cin >> weight;
+
+    cout << "Enter height in meters=> ";
+    cin >> height;
+
+    cout << "Enter your age=> ";
+    cin >> age;
+
+    height = height * 100.0;
+    bmr = (10 * weight) + ((6.25 * height) - 5) * (age + 5);
+
+    cout << "Enter your activity level=> " << endl;
+    cout << "1. sedentary(no excercise)" << endl;
+    cout << "2. lightly active(light excercise 1_3 days)" << endl;
+    cout << "3. moderately active(moderate excercise 3_5 days)" << endl;
+    cout << "4. very active(hard excercise 6_7 days)" << endl;
+    cout << "5. extra active(very hard twice a day training)" << endl;
+    cout << "6. Press 6 to exit" << endl;
+    cout << "Enter choice=> ";
+
+    cin >> activity;
+    while (activity != 6)
+    {
+        if (activity > 0 && activity < 6)
+        {
+            if (activity == 1)
+            {
+                calories = bmr * 1.2;
+            }
+            if (activity == 2)
+            {
+                calories = bmr * 1.375;
+            }
+            if (activity == 3)
+            {
+                calories = bmr * 1.55;
+            }
+            if (activity == 4)
+            {
+                calories = bmr * 1.725;
+            }
+            if (activity == 5)
+            {
+                calories = bmr * 1.9;
+            }
+        }
+        else
+        {
+            cout << "Invalid option try again";
+            getch();
+        }
+    }
+
+    cout << "Your maintainenece calories are " << calories << " calories per day";
+    getch();
+
+    return calories;
+}
